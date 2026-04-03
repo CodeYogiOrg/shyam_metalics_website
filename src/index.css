@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+@theme {
+  --font-headline: "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-label: "Manrope", sans-serif;
+
+  --color-surface: #222022;
+  --color-surface-dim: #222022;
+  --color-surface-bright: #444244;
+  --color-surface-container: #2a282a;
+  --color-surface-container-low: #262426;
+  --color-surface-container-high: #333133;
+  --color-surface-container-highest: #3e3c3e;
+  --color-surface-container-lowest: #1a181a;
+  --color-surface-variant: #3e3c3e;
+  --color-surface-tint: #C3D809;
+
+  --color-background: #222022;
+  --color-on-background: #e5e2e1;
+  --color-on-surface: #e5e2e1;
+  --color-on-surface-variant: #c4b8b0;
+
+  --color-primary: #C3D809;
+  --color-primary-container: #9AAE07;
+  --color-primary-fixed: #e8f5a0;
+  --color-primary-fixed-dim: #C3D809;
+  --color-on-primary: #1a1c00;
+  --color-on-primary-container: #1a1c00;
+  --color-on-primary-fixed: #2a2d00;
+  --color-on-primary-fixed-variant: #5a6200;
+  --color-inverse-primary: #7a8500;
+
+  --color-secondary: #bdc7d8;
+  --color-secondary-container: #404a57;
+  --color-secondary-fixed: #d9e3f4;
+  --color-secondary-fixed-dim: #bdc7d8;
+  --color-on-secondary: #27313e;
+  --color-on-secondary-container: #afb9c9;
+  --color-on-secondary-fixed: #121c28;
+  --color-on-secondary-fixed-variant: #3e4755;
+
+  --color-tertiary: #C3D809;
+  --color-tertiary-container: #9AAE07;
+  --color-tertiary-fixed: #e8f5a0;
+  --color-tertiary-fixed-dim: #C3D809;
+  --color-on-tertiary: #1a1c00;
+  --color-on-tertiary-container: #1a1c00;
+  --color-on-tertiary-fixed: #2a2d00;
+  --color-on-tertiary-fixed-variant: #5a6200;
+
+  --color-error: #ffb4ab;
+  --color-error-container: #93000a;
+  --color-on-error: #690005;
+  --color-on-error-container: #ffdad6;
+
+  --color-outline: #7a7574;
+  --color-outline-variant: #4a4544;
+  --color-inverse-surface: #e5e2e1;
+  --color-inverse-on-surface: #313030;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.glass-card {
+  background: rgba(42, 40, 42, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-panel {
+  background: rgba(42, 40, 42, 0.6);
+  backdrop-filter: blur(12px);
+}
+
+.molten-gradient {
+  background: linear-gradient(135deg, #C3D809 0%, #9AAE07 50%, #C3D809 100%);
+}
+
+.metallic-text {
+  background: linear-gradient(135deg, #C3D809 0%, #e8f5a0 50%, #C3D809 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-molten {
+  background: linear-gradient(to right, #C3D809, #e8f5a0, #C3D809);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.industrial-mesh {
+  background-image: radial-gradient(#333133 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(195, 216, 9, 0.6), 0 0 40px rgba(195, 216, 9, 0.3);
+}
+
+.electric-glow {
+  box-shadow: 0 0 40px rgba(195, 216, 9, 0.15);
+}
+
+.industrial-glow {
+  box-shadow: 0 0 50px -12px rgba(195, 216, 9, 0.2);
+}
+
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, rgba(195, 216, 9, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(195, 216, 9, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.text-stroke {
+  -webkit-text-stroke: 1px rgba(229, 226, 225, 0.3);
+  color: transparent;
+}
+
+.metallic-overlay {
+  background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+}
+
+.bg-mesh {
+  background-image: radial-gradient(at 0% 0%, rgba(195, 216, 9, 0.05) 0px, transparent 50%),
+                    radial-gradient(at 100% 100%, rgba(154, 174, 7, 0.05) 0px, transparent 50%);
+}
+
+.foundry-glow {
+  background: radial-gradient(circle at center, rgba(195, 216, 9, 0.08) 0%, transparent 70%);
+}
+
+.glow-overlay {
+  background: radial-gradient(circle at 50% 50%, rgba(195, 216, 9, 0.1) 0%, transparent 70%);
+}
+
+.metallic-gradient {
+  background: linear-gradient(135deg, #C3D809 0%, #9AAE07 100%);
+}
+
+@keyframes pulse-glow {
+  0%, 100% { text-shadow: 0 0 16px rgba(195,216,9,0.8); }
+  50% { text-shadow: 0 0 24px rgba(195,216,9,1); }
+}
+
+@keyframes wave-flow {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.wave-animate {
+  animation: wave-flow 12s linear infinite;
+}
+
+.wave-animate-slow {
+  animation: wave-flow 18s linear infinite;
+}
+
+.wave-animate-reverse {
+  animation: wave-flow 15s linear infinite reverse;
+}
