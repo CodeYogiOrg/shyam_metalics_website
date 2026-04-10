@@ -1,20 +1,20 @@
 import { motion } from 'framer-motion'
 import AnimatedSection, { StaggerContainer, StaggerItem } from '../components/AnimatedSection'
-import { WaveSection } from '../components/WaveDivider'
+import WaveCanvas from '../components/WaveCanvas'
 
 export default function Manufacturing() {
   return (
     <>
       {/* Hero */}
-      <WaveSection waves={4} className="relative min-h-screen flex items-center pt-24 overflow-hidden">
+      <section className="relative min-h-screen flex items-center pt-24 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img className="w-full h-full object-cover opacity-40 brightness-50" alt="Cinematic wide shot of a massive steel integrated manufacturing plant at night" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6Lg6ckUxU2_Hu32zEdZZJ19jevSQONZfm3NME7d-xwzpG_6GZ_6gS1zE4hRq4F7_QLCJvQjcl3qTOdJO29PyemY7-UGli3PSUuQc4TrVGcYFTSFoeQGoQBJR3WgnVS75sJ7QpORj3n5F2Hie2YbMyFhUnIQosepvDVtd23BHwbE60LoDejudMmkcYssUGsfDh-pU0HrsubBIrgWi41Aq8ej06TYSz_V-8zzzf3WGT4Hgng6h3FAHFiig3GO6VUg6_DOE7H5g2ceM" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#222022] via-[#222022]/60 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#EDF1F5] via-[#EDF1F5]/60 to-transparent"></div>
         </div>
         <div className="relative z-10 px-6 md:px-12 max-w-[1920px] mx-auto w-full grid grid-cols-12 gap-8">
           <div className="col-span-12 lg:col-span-8">
             <AnimatedSection delay={0.2}>
-              <span className="font-label text-[#C3D809] font-bold tracking-[0.3em] uppercase text-sm mb-6 block">Strategic Infrastructure</span>
+              <span className="font-label text-[#0145F2] font-bold tracking-[0.3em] uppercase text-sm mb-6 block">Strategic Infrastructure</span>
             </AnimatedSection>
             <AnimatedSection delay={0.4}>
               <h1 className="text-7xl md:text-9xl font-black font-headline tracking-tighter leading-none mb-8">
@@ -29,13 +29,15 @@ export default function Manufacturing() {
             </AnimatedSection>
           </div>
           <AnimatedSection delay={0.8} className="col-span-12 lg:col-span-4 flex flex-col justify-end">
-            <div className="glass-card p-8 rounded-xl border-l-4 border-[#C3D809]">
+            <div className="glass-card p-8 rounded-xl border-l-4 border-[#0145F2]">
               <div className="text-5xl font-black font-headline mb-1 tracking-tighter">13.0 MTPA</div>
               <p className="font-label text-on-surface-variant text-sm uppercase tracking-widest">Aggregate Capacity</p>
             </div>
           </AnimatedSection>
         </div>
-      </WaveSection>
+      </section>
+
+      <WaveCanvas height={200} flip={false} intensity={1.0} />
 
       {/* Precision Machine */}
       <section className="py-32 px-6 md:px-12 bg-surface-container-lowest relative overflow-hidden">
@@ -56,7 +58,7 @@ export default function Manufacturing() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 <div className="absolute bottom-10 left-10">
                   <h3 className="text-3xl font-black font-headline mb-2">Automated Rolling Mills</h3>
-                  <span className="inline-flex items-center gap-2 bg-[#C3D809]/20 backdrop-blur-md px-4 py-2 rounded-full border border-[#C3D809]/30">
+                  <span className="inline-flex items-center gap-2 bg-[#0145F2]/20 backdrop-blur-md px-4 py-2 rounded-full border border-[#0145F2]/30">
                     <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>settings_suggest</span>
                     <span className="font-label text-xs font-bold uppercase tracking-widest">Smart Control Systems</span>
                   </span>
@@ -66,14 +68,14 @@ export default function Manufacturing() {
             <StaggerItem>
               <div className="space-y-6 h-full flex flex-col">
                 <div className="bg-surface-container-high p-8 flex-1 flex flex-col justify-between group hover:bg-surface-bright transition-colors">
-                  <span className="material-symbols-outlined text-[#C3D809] text-4xl">precision_manufacturing</span>
+                  <span className="material-symbols-outlined text-[#0145F2] text-4xl">precision_manufacturing</span>
                   <div>
                     <h4 className="font-headline font-bold text-xl mb-2">Technical Core</h4>
                     <p className="text-sm text-on-surface-variant leading-relaxed">Proprietary DRI technology ensuring 99.9% consistency in raw material grade.</p>
                   </div>
                 </div>
                 <div className="bg-surface-container-high p-8 flex-1 flex flex-col justify-between group hover:bg-surface-bright transition-colors">
-                  <span className="material-symbols-outlined text-[#C3D809] text-4xl">hub</span>
+                  <span className="material-symbols-outlined text-[#0145F2] text-4xl">hub</span>
                   <div>
                     <h4 className="font-headline font-bold text-xl mb-2">Network Integration</h4>
                     <p className="text-sm text-on-surface-variant leading-relaxed">Direct railway sidings at all locations reducing logistical latency by 30%.</p>
@@ -85,12 +87,14 @@ export default function Manufacturing() {
         </div>
       </section>
 
+      <WaveCanvas height={200} flip={true} intensity={1.0} />
+
       {/* Flagship Units */}
-      <WaveSection waves={3} className="py-32 bg-surface">
+      <section className="py-32 bg-surface">
         <div className="px-6 md:px-12 max-w-[1920px] mx-auto mb-16">
           <AnimatedSection>
             <h2 className="text-5xl font-black font-headline tracking-tighter mb-4">OUR FLAGSHIP UNITS</h2>
-            <div className="w-24 h-1 bg-[#C3D809]"></div>
+            <div className="w-24 h-1 bg-[#0145F2]"></div>
           </AnimatedSection>
         </div>
         {/* Jamuria */}
@@ -100,7 +104,7 @@ export default function Manufacturing() {
               <img className="absolute inset-0 w-full h-full object-cover" alt="Industrial aerial view of Jamuria steel plant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABChsuQoZ8aRK-1B0o3MTLBKv9DRMSuZ-ffwHmmJlNI6uTJS7BC59GucrtE1rXnRu0PCrD8rcMHV9HKDRWnapEb1qc5BVZaNOZJUmn3KMSNeCG99lotu2Ds7aoGC8howqIREW55GOJPasH5xzkot7Rio8JKUh-OyqPavLCJENRq4GLkoxTxwN3ZMiaOD5byqzN5Zmb_52f9Fy3ekYLvvVLu8uMUo16viukNYBWbwUZB5IYPfllBOuoGvtpYaFgHBkBiV90xmLtQeA" />
               <div className="absolute inset-0 bg-black/20"></div>
               <div className="absolute top-12 left-12">
-                <span className="bg-[#1a181a] text-zinc-100 px-6 py-2 font-label text-xs font-black tracking-[0.2em] uppercase">WEST BENGAL</span>
+                <span className="bg-[#EDF1F5] text-zinc-100 px-6 py-2 font-label text-xs font-black tracking-[0.2em] uppercase">WEST BENGAL</span>
               </div>
             </div>
             <div className="lg:w-1/2 bg-surface-container p-12 md:p-24 flex flex-col justify-center">
@@ -108,11 +112,11 @@ export default function Manufacturing() {
               <p className="text-on-surface-variant mb-12 max-w-lg leading-relaxed">Our largest integrated steel plant, housing modern captive power plants and massive EAF steel melting shops.</p>
               <div className="grid grid-cols-2 gap-8 mb-12">
                 <div className="border-l border-outline-variant/30 pl-6">
-                  <div className="text-2xl font-bold font-headline text-[#C3D809]">1,100 Acres</div>
+                  <div className="text-2xl font-bold font-headline text-[#0145F2]">1,100 Acres</div>
                   <div className="font-label text-xs uppercase tracking-widest text-on-surface/50">Total Area</div>
                 </div>
                 <div className="border-l border-outline-variant/30 pl-6">
-                  <div className="text-2xl font-bold font-headline text-[#C3D809]">ISO 14001</div>
+                  <div className="text-2xl font-bold font-headline text-[#0145F2]">ISO 14001</div>
                   <div className="font-label text-xs uppercase tracking-widest text-on-surface/50">Certification</div>
                 </div>
               </div>
@@ -126,7 +130,7 @@ export default function Manufacturing() {
               <img className="absolute inset-0 w-full h-full object-cover" alt="Interior of Sambalpur ferro alloy plant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4IuybSgJMnBV-wQIjTj6jwtDTsUwW1-WRzolEcP4peRXcY4bXC8sX-YyRdr7jrn9Cb-fvl5gEaGMMuncJQ0bCITNX9x3FuTqITYTbU44nE5OEq_kM0SZjls5QssC24EOcwj8rxef4hNP37uMy6O70FVWZFMoB0F0uUsK6DTaqRMAIuu1pAMAfJfETH8eLHJMck1FwoT9_U1ZEZn0UCWGE9cNnzpFg1L2rJRo5Y5m6yfj2ioUGs9QgMYrB1LMMZUcqwvbn0gB4DMs" />
               <div className="absolute inset-0 bg-black/20"></div>
               <div className="absolute top-12 right-12">
-                <span className="bg-[#1a181a] text-zinc-100 px-6 py-2 font-label text-xs font-black tracking-[0.2em] uppercase">ODISHA</span>
+                <span className="bg-[#EDF1F5] text-zinc-100 px-6 py-2 font-label text-xs font-black tracking-[0.2em] uppercase">ODISHA</span>
               </div>
             </div>
             <div className="lg:w-1/2 bg-surface-container-high p-12 md:p-24 flex flex-col justify-center">
@@ -134,18 +138,20 @@ export default function Manufacturing() {
               <p className="text-on-surface-variant mb-12 max-w-lg leading-relaxed">Strategic hub for Ferro Alloys and high-grade Billets. This unit powers our export operations.</p>
               <div className="grid grid-cols-2 gap-8 mb-12">
                 <div className="border-l border-outline-variant/30 pl-6">
-                  <div className="text-2xl font-bold font-headline text-[#C3D809]">Captive Power</div>
+                  <div className="text-2xl font-bold font-headline text-[#0145F2]">Captive Power</div>
                   <div className="font-label text-xs uppercase tracking-widest text-on-surface/50">Sustainability</div>
                 </div>
                 <div className="border-l border-outline-variant/30 pl-6">
-                  <div className="text-2xl font-bold font-headline text-[#C3D809]">TMT & Wire</div>
+                  <div className="text-2xl font-bold font-headline text-[#0145F2]">TMT & Wire</div>
                   <div className="font-label text-xs uppercase tracking-widest text-on-surface/50">Core Production</div>
                 </div>
               </div>
             </div>
           </div>
         </AnimatedSection>
-      </WaveSection>
+      </section>
+
+      <WaveCanvas height={200} flip={false} intensity={0.8} />
 
       {/* Spec Grid */}
       <section className="py-24 px-6 md:px-12 bg-surface-container-lowest">
@@ -163,8 +169,8 @@ export default function Manufacturing() {
             { label: 'R&D CORE', title: 'QA Labs', desc: 'Spectroscopy and physical testing for zero-defect production.' },
           ].map((item) => (
             <StaggerItem key={item.label}>
-              <motion.div whileHover={{ y: -5, borderColor: 'rgba(195,216,9,0.5)' }} className="glass-card p-10 border-t border-[#C3D809]/20 transition-all h-full">
-                <h4 className="font-label text-xs text-[#C3D809] font-bold tracking-widest mb-4">{item.label}</h4>
+              <motion.div whileHover={{ y: -5, borderColor: 'rgba(1,69,242,0.5)' }} className="glass-card p-10 border-t border-[#0145F2]/20 transition-all h-full">
+                <h4 className="font-label text-xs text-[#0145F2] font-bold tracking-widest mb-4">{item.label}</h4>
                 <div className="text-3xl font-bold font-headline mb-2">{item.title}</div>
                 <p className="text-sm text-on-surface-variant">{item.desc}</p>
               </motion.div>

@@ -1,209 +1,428 @@
-import { motion } from 'framer-motion'
+import React, { useState, useMemo } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import AnimatedSection, { StaggerContainer, StaggerItem } from '../components/AnimatedSection'
-import { WaveSection } from '../components/WaveDivider'
+import WaveCanvas from '../components/WaveCanvas'
+
+const JOBS = [
+  { id: 1, title: "Project / Institutional Sales", location: "East", salary: "Not Disclosed", dept: "Sales" },
+  { id: 2, title: "Project Sales", location: "North", salary: "Not Disclosed", dept: "Sales" },
+  { id: 3, title: "TMT Sales Head", location: "PAN India", salary: "Not Disclosed", dept: "Sales" },
+  { id: 4, title: "TMT Sales (Senior Profile)", location: "PAN India", salary: "Not Disclosed", dept: "Sales" },
+  { id: 5, title: "SS TIG / MIG Wire Sales", location: "West", salary: "Not Disclosed", dept: "Sales" },
+  { id: 6, title: "SS / Wire Rod Sales", location: "North", salary: "Not Disclosed", dept: "Sales" },
+  { id: 7, title: "Structural Business Head", location: "PAN India", salary: "Not Disclosed", dept: "Leadership" },
+  { id: 8, title: "Leadership Profile – Sales", location: "PAN India", salary: "Not Disclosed", dept: "Leadership" },
+  { id: 9, title: "Brand Manager", location: "Head Office", salary: "Not Disclosed", dept: "Marketing" },
+  { id: 10, title: "Finance Head", location: "Jamuria", salary: "Not Disclosed", dept: "Finance" },
+  { id: 11, title: "Accounts & Commercial (Plant Fund Control – Inter CA+)", location: "Plant Location", salary: "Not Disclosed", dept: "Finance" },
+  { id: 12, title: "Blast Furnace Operation Head", location: "Plant Location", salary: "Not Disclosed", dept: "Operations" },
+  { id: 13, title: "BF Operation Head", location: "Plant Location", salary: "Not Disclosed", dept: "Operations" },
+  { id: 14, title: "DRI Operations", location: "Plant Location", salary: "Not Disclosed", dept: "Operations" },
+  { id: 15, title: "Rolling Mill", location: "Kharagpur Plant", salary: "Not Disclosed", dept: "Operations" },
+  { id: 16, title: "WRM Operation Head", location: "Plant Location", salary: "Not Disclosed", dept: "Operations" },
+  { id: 17, title: "Bright Bar Operation Head", location: "Plant Location", salary: "Not Disclosed", dept: "Operations" },
+  { id: 18, title: "BA Line Head", location: "Plant Location", salary: "Not Disclosed", dept: "Operations" },
+  { id: 19, title: "Raw Material Operations (RMHS)", location: "Plant Location", salary: "Not Disclosed", dept: "Operations" },
+  { id: 20, title: "Overall Raw Material Head", location: "Head Office", salary: "Not Disclosed", dept: "Procurement" },
+  { id: 21, title: "Iron Ore Procurement - Manager", location: "HO / Site", salary: "Not Disclosed", dept: "Procurement" },
+  { id: 22, title: "Iron Ore Procurement – General Manager", location: "Head Office", salary: "Not Disclosed", dept: "Procurement" },
+  { id: 23, title: "SS Scrap Sourcing & Costing General Manager", location: "Head Office", salary: "Not Disclosed", dept: "Procurement" },
+  { id: 24, title: "SS Import Raw Material", location: "Head Office", salary: "Not Disclosed", dept: "Procurement" },
+  { id: 25, title: "Logistics Head", location: "Head Office", salary: "Not Disclosed", dept: "Logistics" },
+  { id: 26, title: "Railway Liaisoning", location: "Site / HO", salary: "Not Disclosed", dept: "Logistics" },
+  { id: 27, title: "Plant HR Head", location: "Sambalpur", salary: "Not Disclosed", dept: "HR" },
+  { id: 28, title: "Plant HR", location: "Indore", salary: "Not Disclosed", dept: "HR" },
+  { id: 29, title: "SS Flat HR", location: "Plant / HO", salary: "Not Disclosed", dept: "HR" },
+  { id: 30, title: "Employee Engagement", location: "HO / Plant", salary: "Not Disclosed", dept: "HR" },
+  { id: 31, title: "Admin Manager", location: "Plant / HO", salary: "Not Disclosed", dept: "Admin" },
+  { id: 32, title: "Talent Head – Stainless Steel", location: "Head Office", salary: "Not Disclosed", dept: "HR" },
+  { id: 33, title: "Ferro Alloys – Strategic Leadership", location: "PAN India", salary: "Not Disclosed", dept: "Leadership" },
+  { id: 34, title: "CRM Project – Technical Head", location: "Head Office", salary: "Not Disclosed", dept: "Technology" },
+];
+
+const cultureCards = [
+  {
+    title: "Career Growth",
+    desc: "Clear pathways to learn, lead, and grow your career confidently.",
+    icon: "trending_up",
+    img: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=600"
+  },
+  {
+    title: "Competitive Pay",
+    desc: "Industry-aligned compensation with performance bonuses and regular salary reviews.",
+    icon: "payments",
+    img: "https://images.unsplash.com/photo-1554224155-672629188427?auto=format&fit=crop&q=80&w=600"
+  },
+  {
+    title: "Employee Recognition",
+    desc: "Your work is recognized through awards, bonuses and public acknowledgement.",
+    icon: "workspace_premium",
+    img: "https://images.unsplash.com/photo-1560438718-eb61ebab2777?auto=format&fit=crop&q=80&w=600"
+  },
+  {
+    title: "Inclusive Culture",
+    desc: "A workplace where every voice is heard and respected.",
+    icon: "diversity_3",
+    img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=600"
+  }
+];
 
 export default function Careers() {
-  return (
-    <>
-      {/* Hero */}
-      <WaveSection waves={4} className="relative min-h-screen flex items-center pt-32 pb-20 px-6 md:px-12 overflow-hidden bg-surface">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#C3D809]/10 blur-[160px] rounded-full -translate-y-1/2 translate-x-1/4"></div>
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#9AAE07]/5 blur-[140px] rounded-full translate-y-1/3 -translate-x-1/4"></div>
-        <div className="max-w-[1440px] mx-auto w-full grid md:grid-cols-2 gap-16 items-center relative z-10">
-          <div className="space-y-8">
-            <AnimatedSection delay={0.2}>
-              <div className="inline-flex items-center space-x-4">
-                <span className="w-12 h-[1px] bg-[#C3D809]"></span>
-                <span className="font-label text-sm uppercase tracking-[0.3em] text-on-surface-variant font-bold">JOIN THE LEGACY</span>
-              </div>
-            </AnimatedSection>
-            <AnimatedSection delay={0.4}>
-              <h1 className="text-7xl md:text-8xl font-black tracking-tighter leading-[0.9] metallic-text">
-                Building the Future Together
-              </h1>
-            </AnimatedSection>
-            <AnimatedSection delay={0.6}>
-              <p className="text-xl text-on-surface/70 leading-relaxed max-w-lg font-light">
-                At Shyam Metalics, we forge more than just steel. We forge careers that redefine industrial excellence through innovation and unwavering integrity.
-              </p>
-            </AnimatedSection>
-            <AnimatedSection delay={0.8}>
-              <div className="flex flex-wrap gap-6 pt-4">
-                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-10 py-5 molten-gradient text-[#1a1c00] font-bold text-sm tracking-widest uppercase rounded-lg shadow-xl shadow-[#C3D809]/20">
-                  Explore Opportunities
-                </motion.button>
-                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-10 py-5 border border-outline-variant/30 text-on-surface font-bold text-sm tracking-widest uppercase hover:bg-surface-container-high transition-all duration-300 rounded-lg">
-                  Our Culture
-                </motion.button>
-              </div>
-            </AnimatedSection>
-          </div>
-          <AnimatedSection direction="right" className="relative group">
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#C3D809]/20 to-transparent rounded-2xl"></div>
-            <img className="rounded-2xl shadow-2xl object-cover w-full h-[600px] border border-white/5 grayscale hover:grayscale-0 transition-all duration-700" alt="Cinematic wide shot of a modern clean industrial facility" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjmHhL2k-D0vzDMQ9nzegkaDSyRiZKccs3oQ-BGqWQ77samcb8XefNenIefepp-XwVpLxjc_7uPS7Mh5tacgp3dadBBgx0XalnuuO-tfaNNLxIolOoxR90J5XIhLqLWeZPifD2a2lpIJPw34mVVqyb8LnV_HNYScE6uY4lHkEbgVvqftLZY_j04ydQRrrI-YySNbUV-QRxxcjROdcG7cy6Q30k5Hue9GAgbeEv_wZPEST7Tofl2sbA3knm_RaGhpHe3Sodbnd61a8" />
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="absolute -bottom-8 -left-8 glass-card p-8 rounded-xl border border-white/5 electric-glow max-w-xs">
-              <span className="material-symbols-outlined text-[#C3D809] text-4xl mb-4">precision_manufacturing</span>
-              <h4 className="font-bold text-lg mb-2">15,000+ Professionals</h4>
-              <p className="text-sm text-on-surface/60 font-label">A collective force driving global infrastructure.</p>
-            </motion.div>
-          </AnimatedSection>
-        </div>
-      </WaveSection>
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [isApplying, setIsApplying] = useState(false);
+  const [formStatus, setFormStatus] = useState(null); // 'success' or 'error'
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', cv: null });
 
-      {/* Core Values */}
-      <section className="py-32 px-6 md:px-12 bg-surface-container-lowest">
-        <div className="max-w-[1440px] mx-auto">
-          <AnimatedSection>
-            <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-              <div className="max-w-2xl">
-                <h2 className="text-5xl font-black tracking-tight mb-6">Built on Values</h2>
-                <p className="text-on-surface/60 text-lg">Our DNA is etched in the furnace of industrial grit and corporate ethics.</p>
-              </div>
-              <div className="font-label text-4xl font-thin text-outline-variant opacity-30 tracking-tighter">01 / VALUES</div>
+  const filteredJobs = useMemo(() => {
+    return JOBS.filter(job => 
+      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.dept.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm]);
+
+  const handleApplySubmit = (e) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email) {
+      setFormStatus('error');
+      setTimeout(() => setFormStatus(null), 3000);
+      return;
+    }
+    setFormStatus('success');
+    setTimeout(() => {
+      setFormStatus(null);
+      setIsApplying(false);
+      setSelectedJob(null);
+      setFormData({ name: '', email: '', phone: '', cv: null });
+    }, 2500);
+  };
+
+  return (
+    <div className="bg-surface overflow-hidden">
+      {/* Hero */}
+      <section className="relative min-h-[80vh] flex items-center pt-32 pb-20 px-6 md:px-12 bg-slate-950">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=1920" 
+            className="w-full h-full object-cover opacity-30 grayscale"
+            alt="Hero Background"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/80 to-[#0145F2]/10"></div>
+        </div>
+
+        <div className="max-w-[1440px] mx-auto w-full relative z-10 text-center md:text-left flex flex-col items-center md:items-start space-y-8">
+          <AnimatedSection delay={0.2}>
+            <div className="inline-flex items-center space-x-4 bg-white/5 backdrop-blur px-4 py-2 rounded-full border border-white/10">
+              <span className="w-2 h-2 bg-[#0145F2] rounded-full animate-pulse"></span>
+              <span className="font-label text-[10px] uppercase tracking-[0.4em] text-white/70 font-black">Careers @ Shyam Metalics</span>
             </div>
           </AnimatedSection>
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[600px]" staggerDelay={0.1}>
-            <StaggerItem className="md:col-span-8">
-              <div className="glass-card rounded-2xl p-12 flex flex-col justify-end relative overflow-hidden group border border-white/5 h-full">
-                <div className="absolute top-0 right-0 p-12 opacity-10 group-hover:opacity-20 transition-opacity">
-                  <span className="material-symbols-outlined text-9xl">verified_user</span>
-                </div>
-                <h3 className="text-4xl font-black mb-4">Integrity</h3>
-                <p className="text-on-surface/60 text-lg max-w-md">Transparency is the core of our operations. We operate with radical honesty at every level of our manufacturing and corporate structure.</p>
-              </div>
-            </StaggerItem>
-            <StaggerItem className="md:col-span-4">
-              <div className="bg-[#C3D809] rounded-2xl p-12 flex flex-col justify-between group hover:scale-[0.98] transition-transform h-full">
-                <span className="material-symbols-outlined text-[#1a1c00] text-5xl">trending_up</span>
-                <div>
-                  <h3 className="text-4xl font-black text-[#1a1c00] mb-4">Excellence</h3>
-                  <p className="text-[#2a2d00]">Never settling for 'enough'. Pushing the boundaries of metallurgy.</p>
-                </div>
-              </div>
-            </StaggerItem>
-            <StaggerItem className="md:col-span-4">
-              <div className="bg-[#C3D809]/10 glass-card rounded-2xl p-12 flex flex-col justify-between border border-white/5 h-full">
-                <span className="material-symbols-outlined text-[#C3D809] text-5xl">groups</span>
-                <div>
-                  <h3 className="text-3xl font-black mb-4">People</h3>
-                  <p className="text-on-surface/60">Empowering our workforce to lead with autonomy and creativity.</p>
-                </div>
-              </div>
-            </StaggerItem>
-            <StaggerItem className="md:col-span-8">
-              <div className="bg-surface-container-high rounded-2xl p-12 flex items-center gap-12 group h-full">
-                <div className="hidden lg:block w-48 h-32 overflow-hidden rounded-xl">
-                  <img className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" alt="Industrial professional engineer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxy-5udyLMAGPeXkr-B2OnuRi51gnR3MJ-yRLeLyyc97bdgbh4kgNlNbAYgcKb3KNn6n4wg6xyQmb376poMl3AsJROm98KtFhBwK7ruTXwj1A4r4FXDuG51vdvcgX0w45oQg7a4Envwn2Q2xug-S8BphrFxUx5t8ctPzMepxBabbdpmGrTzKpiz2VSgZC7r5GaB3fKSBBFd2DmLbDe4dRTFk1K6z2weNkEEKon_rtVM4On4ePrWCv9wP8zqerwM6g2MKGv_ZC_8nI" />
-                </div>
-                <div>
-                  <h3 className="text-3xl font-black mb-2">Social Impact</h3>
-                  <p className="text-on-surface/60">Growing together with the communities we serve through education and health initiatives.</p>
-                </div>
-              </div>
-            </StaggerItem>
-          </StaggerContainer>
+          <AnimatedSection delay={0.4}>
+            <h1 className="text-6xl md:text-9xl font-black tracking-tighter leading-[0.85] text-white uppercase italic">
+              ENGINEERING <br /> <span className="text-[#0145F2] not-italic">EXCELLENCE.</span>
+            </h1>
+          </AnimatedSection>
+          <AnimatedSection delay={0.6}>
+            <p className="text-lg md:text-xl text-slate-400 leading-relaxed max-w-2xl font-medium">
+              We aren't just making steel; we're redefining an industry. Join our high-performance team and build a legacy that lasts for generations.
+            </p>
+          </AnimatedSection>
+          <AnimatedSection delay={0.8}>
+            <div className="flex flex-wrap gap-4">
+              <button 
+                onClick={() => document.getElementById('job-board').scrollIntoView({ behavior: 'smooth' })}
+                className="px-8 py-4 bg-[#0145F2] text-white font-black text-xs tracking-widest uppercase rounded-full shadow-2xl hover:scale-105 transition-transform"
+              >
+                View Jobs
+              </button>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
-      {/* Life at Shyam */}
-      <WaveSection waves={3} className="py-32 px-6 md:px-12 bg-surface">
-        <div className="max-w-[1440px] mx-auto grid lg:grid-cols-2 gap-24 items-center">
-          <AnimatedSection direction="left">
-            <div className="relative">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-4 pt-12">
-                  <img className="rounded-xl h-64 w-full object-cover grayscale hover:grayscale-0 transition-all duration-500" alt="Modern collaborative workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFE1WcuuBRgDqngu7JcmS33KSMskxed9wi1kEeP2-JP3RohFo2wKHqlGo63AGdmk86BdIpanqBQwtEd4MlFmPGLDA9HP_nRTAAxXT7yt__ffWRPAeRZH1Wy-KRgcaYMhl2Q2bvRP9G8fbMZ0MdS7k07u3Lo_5OySXsKA2FpPM0YwhFPso66V2wGCvnYbBlCFFBtF9crrVpFvHJ5nawbSMCx6Ep07Jdh2tI_q7kYNviqOovs08COc66pq7A_8WECvSL4rMDRZygSTE" />
-                  <img className="rounded-xl h-48 w-full object-cover grayscale hover:grayscale-0 transition-all duration-500" alt="Diverse group of young professionals" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDW2D_TztAjsQabnF1LC5bCu9jQSKm-zhU-AJru55_WFY8pVDi-dbebrMmEdp-f8wm4B6oFyfLXy-wdPblhKkh50AJjO_Yjm09MAMFGju1jZC8vB5a60UFGhFAQl_LKR0S6FgRJj2pnCEAMgCYHngSFue5GCqH4uhRqAU7b_sPP21aHzAj3JhDaOTHuw6h9jdRtOPmsPBxebodgEljPYAulFpgKaCeTAGWPNeKLg1cS5w3E6IHweRWrZcCK28SANFm9ft2o9RiX1ZY" />
-                </div>
-                <div className="space-y-4">
-                  <img className="rounded-xl h-48 w-full object-cover grayscale hover:grayscale-0 transition-all duration-500" alt="Elegant glass-walled boardroom" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJ20PFKmvQAP_PzLdFPzM9QrsBc23Q87ese4ER4N7SnwGPnmgvr7SXcBjVfxflq4TEhwRCOJXASF1rWB9HyvMN32C9EazZI-GT665umH8Qk7e67h3otNBUrOfwaLUnGe978hrdFZYR2oERKfwItZmouGQP21GKfTbhmh7qrcukKZtfbfC3e9b98sx2dyevISwxYiz1QLNyZ2jwimdZ1_T0t24EnVWWUdovVaPDGbpJNScvBWUIELQTjOpPMJVooIAFOfosGskjcoQ" />
-                  <img className="rounded-xl h-64 w-full object-cover grayscale hover:grayscale-0 transition-all duration-500" alt="Steel and glass skyscraper at dusk" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBh1p0EAjwx0P7o1Qv6iFI5YsBy9t2dTrf1TBn_XZWV-Urkwp6JCfVybvskXMPo51CWDiLnYztUoNJb-M9MpRtqY5qoOnquTVDN2YgJBtJn_HIYSsxFXdL0gjVrrc_obSyiJxoDBPTx86rAGC_o9TDVp3Gt4RegluzFH3t1m4QCCl7HqvIrhNunX5NrvZ1z8QeBKNOL95Tnmk4IhWiqdFYYvHR76NPmub8if-CkorSAYlqww3lUwIM4tiTRIo08eLHUDfiWQkSRkBM" />
-                </div>
-              </div>
-            </div>
-          </AnimatedSection>
-          <AnimatedSection direction="right">
-            <div className="space-y-12">
-              <h2 className="text-6xl font-black tracking-tight leading-tight">Life Inside the <span className="text-[#C3D809]">Powerhouse</span></h2>
-              <p className="text-lg text-on-surface/60 leading-relaxed">We offer more than just a job. We offer a high-performance ecosystem where talent meets technology.</p>
-              <div className="space-y-6">
-                {[
-                  { icon: 'health_and_safety', title: 'Holistic Wellness', desc: 'Comprehensive healthcare, mental health support, and fitness stipends.' },
-                  { icon: 'school', title: 'Constant Learning', desc: 'Global certification programs and continuous leadership training.' },
-                  { icon: 'flight', title: 'Global Mobility', desc: 'Opportunities to work across international business units and joint ventures.' },
-                ].map((item) => (
-                  <div key={item.title} className="flex items-start gap-6 p-6 rounded-xl hover:bg-surface-container-low transition-colors group">
-                    <div className="w-14 h-14 rounded-lg bg-[#C3D809]/10 flex items-center justify-center text-[#C3D809] shrink-0 group-hover:bg-[#C3D809] group-hover:text-[#1a1c00] transition-all">
-                      <span className="material-symbols-outlined">{item.icon}</span>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-xl mb-1">{item.title}</h4>
-                      <p className="text-sm text-on-surface/50 font-label">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
-      </WaveSection>
+      <WaveCanvas height={150} flip={false} intensity={1.5} />
 
-      {/* Open Roles */}
-      <section className="py-32 px-6 md:px-12 bg-surface-container-low relative overflow-hidden">
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#C3D809]/10 blur-[120px] rounded-full translate-y-1/2"></div>
-        <div className="max-w-[1440px] mx-auto relative z-10">
+      {/* Why Work With Us */}
+      <section className="py-32 px-6 md:px-12 bg-[#F0F4FF]">
+        <div className="max-w-[1440px] mx-auto">
           <AnimatedSection>
-            <div className="flex flex-col md:flex-row justify-between items-center mb-20 gap-8">
-              <h2 className="text-5xl font-black tracking-tight">Open Opportunities</h2>
+            <div className="text-center mb-24">
+              <span className="text-[#0145F2] font-black tracking-[0.5em] uppercase text-xs mb-4 block">Our Culture</span>
+              <h2 className="text-5xl md:text-7xl font-black font-headline text-slate-900 tracking-tighter uppercase leading-none">
+                WHY WORK <span className="text-[#0145F2]">WITH US?</span>
+              </h2>
             </div>
           </AnimatedSection>
-          <StaggerContainer className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {[
-              { dept: 'Engineering', loc: 'Kolkata, India', title: 'Senior Metallurgical Engineer', desc: 'Optimize furnace operations and lead innovation in high-grade alloy production.' },
-              { dept: 'Technology', loc: 'Remote / Kolkata', title: 'Lead AI Architect (Industry 4.0)', desc: 'Develop predictive maintenance models for our next-gen digital manufacturing twin.' },
-              { dept: 'Operations', loc: 'Sambalpur, Odisha', title: 'Plant Operations Manager', desc: 'Scale production efficiency while maintaining world-class safety protocols.' },
-              { dept: 'Sustainability', loc: 'New Delhi', title: 'Director of ESG Strategy', desc: 'Drive our mission for zero-carbon steel and circular economy initiatives.' },
-            ].map((job) => (
-              <StaggerItem key={job.title}>
-                <motion.div whileHover={{ y: -5, borderColor: 'rgba(195,216,9,0.3)' }} className="group glass-card p-10 rounded-2xl border border-white/5 transition-all duration-500 cursor-pointer flex justify-between items-center">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3">
-                      <span className="px-3 py-1 rounded-full bg-[#C3D809]/10 text-[#C3D809] text-[10px] font-black uppercase tracking-widest">{job.dept}</span>
-                      <span className="text-on-surface/30 text-xs font-label">{job.loc}</span>
-                    </div>
-                    <h3 className="text-3xl font-bold group-hover:text-[#C3D809] transition-colors">{job.title}</h3>
-                    <p className="text-on-surface/60 max-w-md">{job.desc}</p>
+
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {cultureCards.map((card, i) => (
+              <StaggerItem key={i}>
+                <div className="group bg-white rounded-[32px] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-slate-100 flex flex-col h-full">
+                  <div className="h-48 overflow-hidden">
+                    <img src={card.img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" alt={card.title} />
                   </div>
-                  <span className="material-symbols-outlined text-4xl group-hover:translate-x-2 transition-transform duration-300">arrow_forward_ios</span>
-                </motion.div>
+                  <div className="p-8 space-y-4 flex-grow">
+                    <div className="w-12 h-12 rounded-2xl bg-[#0145F2]/5 flex items-center justify-center group-hover:bg-[#0145F2] group-hover:text-white transition-colors duration-500">
+                      <span className="material-symbols-outlined text-2xl">{card.icon}</span>
+                    </div>
+                    <h4 className="text-xl font-black font-headline uppercase text-slate-800 tracking-tight">{card.title}</h4>
+                    <p className="text-slate-500 text-sm leading-relaxed font-medium">{card.desc}</p>
+                  </div>
+                </div>
               </StaggerItem>
             ))}
           </StaggerContainer>
-          <AnimatedSection delay={0.2}>
-            <div className="mt-20 text-center">
-              <motion.button whileHover={{ scale: 1.05, backgroundColor: '#C3D809', color: '#1a1c00' }} whileTap={{ scale: 0.95 }} className="px-12 py-6 border border-[#C3D809] text-[#C3D809] font-black tracking-[0.2em] uppercase transition-all duration-500 rounded-lg">
-                View All 42 Open Positions
-              </motion.button>
-            </div>
-          </AnimatedSection>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-32 px-6 md:px-12 bg-[#1a181a] relative overflow-hidden text-center">
-        <AnimatedSection>
-          <div className="max-w-4xl mx-auto space-y-10 relative z-10">
-            <h2 className="text-6xl md:text-7xl font-black tracking-tighter leading-none italic">DON'T JUST WORK.<br /> <span className="text-[#C3D809]">REINVENT AN INDUSTRY.</span></h2>
-            <p className="text-xl text-zinc-400 font-light">Join the ranks of the visionary. Apply to Shyam Metalics today.</p>
-            <div className="flex justify-center">
-              <motion.button whileHover={{ scale: 1.05, backgroundColor: '#C3D809', color: '#1a1c00' }} whileTap={{ scale: 0.95 }} className="group flex items-center gap-6 px-12 py-6 bg-zinc-100 text-zinc-950 font-black tracking-widest uppercase transition-all duration-300">
-                Join the Foundry
-                <span className="material-symbols-outlined group-hover:translate-x-2 transition-transform">bolt</span>
-              </motion.button>
+      {/* Job Board */}
+      <section id="job-board" className="py-32 px-6 md:px-12 bg-white relative overflow-hidden">
+        <div className="max-w-[1440px] mx-auto">
+          <AnimatedSection>
+            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+              <div className="space-y-4">
+                <h2 className="text-5xl md:text-6xl font-black font-headline tracking-tighter uppercase text-slate-900">Job <span className="text-[#0145F2]">Opportunities</span></h2>
+                <p className="text-slate-500 font-medium">Discover your next milestone at Shyam Metalics.</p>
+              </div>
+              
+              <div className="relative w-full md:w-[400px]">
+                <span className="absolute left-6 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400">search</span>
+                <input 
+                  type="text" 
+                  placeholder="Search jobs, locations, or depts..."
+                  className="w-full pl-14 pr-6 py-4 rounded-full border border-slate-200 bg-slate-50 focus:outline-none focus:border-[#0145F2] focus:ring-4 focus:ring-[#0145F2]/5 transition-all text-sm font-medium"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
             </div>
-          </div>
-        </AnimatedSection>
+          </AnimatedSection>
+
+          <StaggerContainer className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-20">
+            {filteredJobs.length > 0 ? (
+              filteredJobs.map((job) => (
+                <StaggerItem key={job.id}>
+                  <div className="group bg-white p-8 rounded-[24px] border border-slate-100 shadow-lg hover:shadow-xl hover:border-[#0145F2]/20 transition-all duration-300 flex flex-col md:flex-row md:items-center justify-between gap-6 overflow-hidden relative">
+                    <div className="absolute top-0 right-0 w-2 h-full bg-[#0145F2] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div className="space-y-4">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <span className="px-3 py-1 rounded-full bg-[#0145F2]/10 text-[#0145F2] text-[10px] font-black uppercase tracking-widest">{job.dept}</span>
+                        <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[14px]">location_on</span> {job.location}
+                        </span>
+                      </div>
+                      <h3 className="text-2xl font-black font-headline uppercase text-slate-800 tracking-tight leading-tight">{job.title}</h3>
+                      <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
+                        <span className="material-symbols-outlined text-sm">payments</span>
+                        Salary: {job.salary}
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-3 shrink-0">
+                      <button 
+                        onClick={() => setSelectedJob(job)}
+                        className="px-6 py-3 border border-slate-200 text-slate-600 font-bold text-[10px] uppercase tracking-widest rounded-xl hover:bg-slate-50 transition-colors"
+                      >
+                        Details
+                      </button>
+                      <button 
+                        onClick={() => { setSelectedJob(job); setIsApplying(true); }}
+                        className="px-6 py-3 bg-slate-900 text-white font-bold text-[10px] uppercase tracking-widest rounded-xl hover:bg-[#0145F2] transition-colors shadow-lg shadow-black/10"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+                </StaggerItem>
+              ))
+            ) : (
+              <div className="col-span-full py-20 text-center">
+                <span className="material-symbols-outlined text-6xl text-slate-200 mb-4">search_off</span>
+                <p className="text-slate-400 font-medium">No roles found matching "{searchTerm}". Try a different term.</p>
+              </div>
+            )}
+          </StaggerContainer>
+        </div>
       </section>
-    </>
+
+      {/* Modal Overlay */}
+      <AnimatePresence>
+        {selectedJob && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-sm"
+            onClick={(e) => { if (e.target === e.currentTarget) { setSelectedJob(null); setIsApplying(false); } }}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-white w-full max-w-2xl rounded-[40px] shadow-2xl overflow-hidden relative max-h-[90vh] flex flex-col"
+            >
+              <button 
+                onClick={() => { setSelectedJob(null); setIsApplying(false); }}
+                className="absolute top-8 right-8 w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center hover:bg-[#0145F2] hover:text-white transition-all z-20"
+              >
+                <span className="material-symbols-outlined text-sm">close</span>
+              </button>
+
+              <div className="flex-grow overflow-y-auto p-12 custom-scrollbar">
+                {!isApplying ? (
+                  <div className="space-y-8">
+                    <div className="space-y-4">
+                      <div className="inline-flex items-center gap-3 px-3 py-1 rounded-full bg-[#0145F2]/10 text-[#0145F2] text-[10px] font-black uppercase tracking-widest">
+                        {selectedJob.dept}
+                      </div>
+                      <h2 className="text-4xl md:text-5xl font-black font-headline uppercase text-slate-900 tracking-tighter leading-none italic">
+                        {selectedJob.title}
+                      </h2>
+                      <div className="flex items-center gap-6 text-slate-500 font-bold uppercase text-[10px] tracking-widest">
+                        <span className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-lg text-[#0145F2]">location_on</span> {selectedJob.location}
+                        </span>
+                        <span className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-lg text-[#0145F2]">payments</span> Salary: {selectedJob.salary}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-6 rounded-3xl bg-[#0145F2]/5 border border-[#0145F2]/10 space-y-2">
+                        <span className="material-symbols-outlined text-[#0145F2]">assignment_ind</span>
+                        <h4 className="font-black text-xs uppercase tracking-widest">Full Time</h4>
+                        <p className="text-xs text-slate-500 uppercase font-black">Industrial Role</p>
+                      </div>
+                      <div className="p-6 rounded-3xl bg-slate-50 border border-slate-100 space-y-2">
+                        <span className="material-symbols-outlined text-[#0145F2]">calendar_today</span>
+                        <h4 className="font-black text-xs uppercase tracking-widest">Immediate Joiner</h4>
+                        <p className="text-xs text-slate-500 uppercase font-black">Open Priority</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4 pt-4 border-t border-slate-100">
+                      <h4 className="text-sm font-black uppercase tracking-widest text-[#0145F2]">About the Role</h4>
+                      <p className="text-slate-600 leading-relaxed font-medium">
+                        At Shyam Metalics, we are looking for a visionary {selectedJob.title} to join our {selectedJob.dept} division in {selectedJob.location}. 
+                        As part of our leadership core, you will be responsible for driving operational excellence and ensuring our steel manufacturing processes remain world-class.
+                      </p>
+                      <ul className="space-y-3">
+                        {['Strategic planning & execution', 'Stakeholder management', 'Driving Innovation 4.0', 'Collaborative Leadership'].map((item, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#0145F2] mt-2 shrink-0"></span>
+                            <span className="text-slate-600 font-medium text-sm">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="pt-8">
+                      <button 
+                        onClick={() => setIsApplying(true)}
+                        className="w-full py-6 bg-slate-900 text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-[#0145F2] transition-all shadow-xl shadow-[#0145F2]/20"
+                      >
+                        Apply for this position
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-8">
+                    <div className="space-y-2">
+                      <h2 className="text-4xl font-black font-headline uppercase text-slate-900 tracking-tight leading-none italic">Apply <br /> <span className="text-[#0145F2] not-italic">Form.</span></h2>
+                      <p className="text-slate-500 font-medium text-sm">Position: {selectedJob.title}</p>
+                    </div>
+
+                    <form onSubmit={handleApplySubmit} className="space-y-6">
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Full Name</label>
+                        <input 
+                          type="text" 
+                          required
+                          className="w-full p-4 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:border-[#0145F2] transition-all font-medium text-sm"
+                          placeholder="Ex: Rajesh Kumar"
+                          value={formData.name}
+                          onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Email Address</label>
+                        <input 
+                          type="email" 
+                          required
+                          className="w-full p-4 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:border-[#0145F2] transition-all font-medium text-sm"
+                          placeholder="rajesh@example.com"
+                          value={formData.email}
+                          onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Phone Number</label>
+                        <input 
+                          type="tel" 
+                          required
+                          className="w-full p-4 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:border-[#0145F2] transition-all font-medium text-sm"
+                          placeholder="+91 XXXXX XXXXX"
+                          value={formData.phone}
+                          onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                        />
+                      </div>
+                      <div className="p-8 border-2 border-dashed border-slate-200 rounded-3xl bg-slate-50 flex flex-col items-center justify-center text-center group hover:border-[#0145F2]/50 transition-colors cursor-pointer">
+                        <span className="material-symbols-outlined text-4xl text-slate-300 group-hover:text-[#0145F2] transition-colors mb-2">upload_file</span>
+                        <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">Upload Resume (PDF)</p>
+                        <p className="text-[10px] text-slate-400">Max size: 5MB</p>
+                      </div>
+
+                      <div className="pt-6 relative">
+                        <button 
+                          type="submit"
+                          disabled={formStatus === 'success'}
+                          className={`w-full py-6 font-black uppercase tracking-[0.2em] text-xs rounded-2xl transition-all shadow-xl ${
+                            formStatus === 'success' ? 'bg-green-500 text-white shadow-green-500/20' : 'bg-slate-900 text-white hover:bg-[#0145F2] shadow-black/20'
+                          }`}
+                        >
+                          {formStatus === 'success' ? 'Application Sent' : 'Submit Application'}
+                        </button>
+
+                        <AnimatePresence>
+                          {formStatus === 'success' && (
+                            <motion.div 
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0 }}
+                              className="absolute -top-12 left-0 right-0 py-3 bg-green-500 text-white text-center rounded-xl text-[10px] font-black uppercase tracking-widest"
+                            >
+                              Data Geted Succefully
+                            </motion.div>
+                          )}
+                          {formStatus === 'error' && (
+                            <motion.div 
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0 }}
+                              className="absolute -top-12 left-0 right-0 py-3 bg-red-500 text-white text-center rounded-xl text-[10px] font-black uppercase tracking-widest"
+                            >
+                              Invalid Details. Please try again.
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </form>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <style jsx>{`
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #0145F2; }
+        .font-headline { font-family: 'Inter', sans-serif; }
+      `}</style>
+    </div>
   )
 }

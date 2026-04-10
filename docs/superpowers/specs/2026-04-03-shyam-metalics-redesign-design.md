@@ -110,7 +110,7 @@ All files in `src/` will be scanned and updated:
 | Wave 2 | After Core Materials section | `true` | `220px` |
 | Wave 3 | After Partner CTA, before Footer | `false` | `200px` |
 
-**Other pages:** Three.js `WaveCanvas` is only used on Home page (3 dividers). Other pages keep their existing `WaveSection`/`WaveDivider` SVG components — only their colors update to blue (`#0145F2`) as part of Task 1.
+**Every page** gets Three.js `WaveCanvas` dividers — maximum 3 per page (spread from top to bottom of page content). Shorter pages (e.g. Contact, Careers) may use 2 waves if content length doesn't justify 3. Old `WaveSection`/`WaveDivider` SVG usages are replaced with `WaveCanvas` across all pages.
 
 **Critical:** Canvas has `pointer-events: none` so it never blocks clicks.
 
@@ -206,7 +206,7 @@ The following root-level files are one-time migration/fix scripts. They are not 
 
 - `src/index.css`
 - `src/components/WaveCanvas.jsx` (new)
-- `src/components/WaveDivider.jsx` (kept but superseded)
+- `src/components/WaveDivider.jsx` (superseded — usages replaced across all pages)
 - `src/components/Navbar.jsx`
 - `src/components/Footer.jsx`
 - `src/components/AnimatedSection.jsx` (color refs)

@@ -11,7 +11,7 @@ export default function Layout({ children }) {
   }, [pathname])
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#222022]">
+    <div className="min-h-screen flex flex-col bg-[#EDF1F5]">
       <Navbar />
       <main className="flex-1">
         {children}

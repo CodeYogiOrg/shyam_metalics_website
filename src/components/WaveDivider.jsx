@@ -10,10 +10,10 @@ export default function WaveDivider({ flip = false, color = '#222022', opacity =
 
 export function WaveSection({ children, className = '', waves = 3 }) {
   const colors = [
-    { color: '#C3D809', opacity: 0.08 },
-    { color: '#9AAE07', opacity: 0.05 },
-    { color: '#C3D809', opacity: 0.03 },
-    { color: '#222022', opacity: 0.06 },
+    { color: '#0145F2', opacity: 0.08 },
+    { color: '#0138C7', opacity: 0.05 },
+    { color: '#0145F2', opacity: 0.03 },
+    { color: '#EDF1F5', opacity: 0.06 },
   ]
 
   return (
@@ -30,7 +30,7 @@ export function WaveSection({ children, className = '', waves = 3 }) {
             >
               <path
                 d={`M0,${30 + i * 15} C${200 + i * 50},${80 - i * 10} ${400 + i * 30},${10 + i * 10} 600,${40 + i * 8} C${800 + i * 40},${80 - i * 8} ${1000 + i * 20},${10 + i * 12} 1200,${40 + i * 8} C${1400 + i * 50},${80 - i * 10} ${1600 + i * 30},${10 + i * 10} 1800,${40 + i * 8} C${2000 + i * 40},${80 - i * 8} ${2200 + i * 20},${10 + i * 12} 2400,${40 + i * 8} L2400,120 L0,120 Z`}
-                fill={colors[i]?.color || '#C3D809'}
+                fill={colors[i]?.color || '#0145F2'}
                 fillOpacity={colors[i]?.opacity || 0.05}
               />
             </svg>

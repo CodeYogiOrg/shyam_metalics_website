@@ -2,69 +2,345 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import gsap from 'gsap'
+import { createPortal } from 'react-dom'
 
 const navLinks = {
   about: {
     label: 'About',
     children: [
-      { to: '/', label: 'Overview' },
-      { to: '/leadership', label: 'Leadership' },
+      { to: '/about-overview', label: 'Company Overview' },
       { to: '/manufacturing', label: 'Manufacturing Units' },
+      { to: '/leadership', label: 'Leadership' },
+      { to: '/accreditations', label: 'Awards & Achievements' },
+      { to: '/testimonials', label: 'Testimonials' },
       { to: '/news', label: 'News & Events' },
     ]
   },
   business: {
     label: 'Business',
+    isMega: true,
+    columns: [
+      { label: 'Business Overview', to: '/business-overview', links: [] },
+      {
+        label: 'Iron & Steel',
+        links: [
+          {
+            label: 'Carbon Steel',
+            links: [
+              { to: '/pellet', label: 'Pellet' },
+              { to: '/sponge-iron', label: 'Sponge Iron' },
+              { to: '/pig-iron', label: 'Pig Iron' },
+              { to: '/billet', label: 'Billet' },
+              { to: '/tmt-bar', label: 'TMT Bar' },
+              { to: '/structural-steel', label: 'Structural Steel' },
+              { to: '/wire-rods', label: 'Wire Rods' },
+              { to: '/crash-barrier', label: 'Crash Barrier' }
+            ]
+          },
+          {
+            label: 'Stainless Steel',
+            links: [
+              { to: '/ss-billets', label: 'Stainless Steel Billets' },
+              { to: '/ss-rebar', label: 'SS Rebar' },
+              { to: '/ss-hot-rolled-bar', label: 'SS Hot Rolled Bar' },
+              { to: '/ss-bright-bar', label: 'SS Bright Bar' },
+              { to: '/ss-wires', label: 'SS Wires' },
+              { to: '/ss-welding-wires', label: 'SS Welding Wires' },
+              { to: '/ss-wire-rod', label: 'SS Wire Rod' },
+            ]
+          },
+          { label: 'Ferro Alloys', to: '/ferro-alloys', links: [] },
+          {
+            label: 'Flat Products',
+            links: [
+              { to: '/flat-products', label: 'Flat Products' },
+              { to: '/pipe-hollow-sections', label: 'Pipe & Hollow Sections' }
+            ]
+          }
+        ]
+      },
+      {
+        label: 'Aluminium',
+        links: [
+          { to: '/kitchen-foil', label: 'Kitchen Foil Range' },
+          { to: '/battery-foil', label: 'Battery Foil' },
+          { to: '/bare-aluminium', label: 'Bare Aluminium Foil' },
+          { to: '/fin-stock', label: 'Fin Stock' },
+        ]
+      },
+      {
+        label: 'Energy & Others',
+        links: [
+          { to: '/renewable-power', label: 'Renewable Power' },
+          { to: '/captive-power', label: 'Captive Power' },
+          { to: '/railway-wagons', label: 'Railway Wagons' },
+        ]
+      }
+    ]
+  },
+  investor: {
+    label: 'Investors',
+    isMega: true,
+    columns: [
+      {
+        label: 'Financial Information',
+        links: [
+          { to: '/annual-return', label: 'Annual Return' },
+          { to: '/financial-annual-report', label: 'Financial Annual Report' },
+          { to: '/financial-subsidiaries', label: 'Financial of Subsidiaries company' },
+          { to: '/financial-results', label: 'Financial Results' },
+        ]
+      },
+      {
+        label: 'Corporate Announcement',
+        links: [
+          { to: '/newspaper-publication', label: 'Newspaper Publication' },
+          { to: '/press-release', label: 'Press Release' },
+          { to: '/notices', label: 'Notices' },
+          { to: '/regulation-30-disclosures', label: 'Regulation 30 Disclosures' },
+        ]
+      },
+      { label: 'Policies', to: '/policies', links: [] },
+      { label: 'Environment', to: '/environment', links: [] },
+      { label: 'QIP', to: '/qip', links: [] },
+      {
+        label: 'Stock Exchange Compliances',
+        links: [
+          { to: '/stock-exchange-compliances', label: 'Stock Exchange Compliances' }
+        ]
+      },
+      { label: 'Investor Analyst Meet', to: '/investor-analyst-meet', links: [] },
+      {
+        label: 'Investor Information',
+        links: [
+          { to: '/credit-rating', label: 'Credit Rating' },
+          { to: '/postal-ballot', label: 'Postal Ballot' },
+          { to: '/agm', label: 'AGM' },
+        ]
+      },
+      { label: 'Regulation 46 of the SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015', to: '/sebi-regulation-46', links: [] },
+      {
+        label: 'Other',
+        links: [
+          { to: '/other-compliances', label: 'Other Compliances' },
+          { to: '/kmp-contact-details', label: 'KMP Contact Details' },
+          { to: '/investor-relations-contact', label: 'Investor Relations Contact' },
+        ]
+      },
+      { label: 'TDS Declarations', to: '/tds-declarations', links: [] },
+      { label: 'SEBI Online Dispute Resolution Platform', to: '/sebi-dispute-resolution', links: [] },
+      { label: 'Familiarization Programme for Independent Directors', to: '/familiarization-programme', links: [] }
+    ]
+  },
+  contact: {
+    label: 'Contact',
     children: [
-      { to: '/iron-and-steel', label: 'Iron & Steel' },
-      { to: '/aluminium', label: 'Aluminium' },
-      { to: '/stainless-steel', label: 'Stainless Steel' },
-      { to: '/energy', label: 'Energy & Others' },
+      { to: '/contact-us', label: 'Contact Us' },
+      { to: '/company-location', label: 'Company Location' },
+    ]
+  },
+  careers: {
+    label: 'Careers',
+    children: [
+      { to: '/career-at-shyam', label: 'Career @ Shyam' },
+      { to: '/life-at-shyam', label: 'Life at Shyam' },
+    ]
+  },
+  sustainability: {
+    label: 'Sustainability',
+    children: [
+      { to: '/esg', label: 'ESG' },
+      { to: '/environment-compliance', label: 'Environment Compliance' },
+    ]
+  },
+  community: {
+    label: 'Community',
+    children: [
+      { to: '/csr', label: 'CSR' },
+      { to: '/blogs', label: 'Blogs' },
     ]
   }
 }
 
-const directLinks = [
-  { to: '/careers', label: 'Careers' },
-  { to: '/sustainability', label: 'Sustainability' },
-  { to: '/community', label: 'Community' },
-  { to: '/contact', label: 'Contact' },
-]
+const directLinks = []
+
+const NestedMenuItem = ({ item, level = 0 }) => {
+  const hasLinks = item.links && item.links.length > 0;
+  const [isHovered, setIsHovered] = useState(false);
+  const [coords, setCoords] = useState({ top: 0, left: 0 });
+  const itemRef = useRef(null);
+  const timeoutRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    if (itemRef.current) {
+      const rect = itemRef.current.getBoundingClientRect();
+      setCoords({ top: Math.max(0, rect.top), left: rect.right + 2 });
+    }
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setIsHovered(false);
+    }, 50);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  const content = (
+    <>
+      <div className="flex items-center gap-3">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#0145F2] opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 shrink-0" />
+        <span className="leading-snug">{item.label}</span>
+      </div>
+      {hasLinks && (
+        <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+      )}
+    </>
+  );
+
+  const itemClasses = "flex items-center justify-between px-6 py-2.5 text-slate-700 hover:text-[#0145F2] hover:bg-[#0145F2]/5 hover:pl-8 transition-all duration-300 text-[14px] uppercase font-bold tracking-wider cursor-pointer group/item w-full";
+
+  return (
+    <div 
+      className="group/nested"
+      ref={itemRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {hasLinks ? (
+        <div className={itemClasses}>
+          {content}
+        </div>
+      ) : (
+        <Link to={item.to || '#'} className={itemClasses}>
+          {content}
+        </Link>
+      )}
+
+      {hasLinks && isHovered && createPortal(
+        <div 
+          className="fixed z-[9999]"
+          style={{ top: coords.top, left: coords.left, paddingLeft: '8px', marginLeft: '-8px' }}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <motion.div
+            initial={{ opacity: 0, x: -5 }}
+            animate={{ opacity: 1, x: 0 }}
+            className={`w-[260px] py-1 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-lg border border-slate-100`}
+          >
+            {item.links.map((link, i) => (
+              <NestedMenuItem key={link.to || i} item={link} level={level + 1} />
+            ))}
+          </motion.div>
+        </div>,
+        document.body
+      )}
+    </div>
+  );
+};
 
 function DropdownMenu({ item, isActive }) {
+  const isMega = item.isMega
+  const isScrollable = item.label === 'Investors'
+
+  const [isOpen, setIsOpen] = useState(false);
+  const timeoutRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setIsOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setIsOpen(false);
+    }, 100);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
   return (
-    <div className="relative group h-full flex items-center">
-      <button className={`flex items-center gap-1 py-2 transition-colors duration-200 ${isActive ? 'text-[#C3D809]' : 'text-zinc-400 hover:text-[#C3D809] group-hover:text-[#C3D809]'}`}>
+    <div 
+      className="relative h-full flex items-center"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <button className={`flex items-center gap-1 py-2 transition-colors duration-200 relative group/btn ${isActive || isOpen ? 'text-[#0145F2]' : 'text-slate-600 hover:text-[#0145F2]'}`}>
         {item.label}
-        <span className="material-symbols-outlined text-sm transition-transform duration-200 group-hover:rotate-180">expand_more</span>
+        <span className={`material-symbols-outlined text-sm transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>expand_more</span>
+        <span className={`absolute -bottom-0.5 left-0 h-0.5 bg-[#0145F2] transition-all duration-300 ${isActive || isOpen ? 'w-full' : 'w-0 hover:w-full'}`} />
       </button>
-      <div className="pt-4 absolute left-1/2 -translate-x-1/2 top-full opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+      <div className={`pt-4 absolute left-1/2 -translate-x-1/2 top-full transition-all duration-300 z-50 ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
         <motion.div
           initial={{ opacity: 0, y: -10, rotateX: -15 }}
-          animate={{ opacity: 1, y: 0, rotateX: 0 }}
-          className="w-56 bg-[#1a181a]/95 backdrop-blur-xl shadow-2xl rounded-lg py-2 border border-[#C3D809]/20 overflow-hidden before:absolute before:top-0 before:left-1/2 before:-translate-x-1/2 before:w-12 before:h-0.5 before:bg-[#C3D809]"
-          style={{ perspective: '800px' }}
+          whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+          className={`${isMega ? 'w-[340px]' : 'w-64'} py-1 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-lg border border-slate-100 overflow-visible relative ${isScrollable ? 'max-h-[75vh] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]' : ''}`}
+          style={{ perspective: '1200px' }}
         >
-          {item.children.map((child, i) => (
-            <motion.div
-              key={child.to}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.05 }}
-            >
-              <Link
-                to={child.to}
-                className="block px-5 py-2.5 text-zinc-400 hover:text-white hover:bg-[#C3D809]/10 hover:pl-6 transition-all duration-200 text-xs tracking-wider"
+          {isMega ? (
+            item.columns.map((col, idx) => (
+              <NestedMenuItem key={col.label || idx} item={col} />
+            ))
+          ) : (
+            item.children.map((child, i) => (
+              <motion.div
+                key={child.to}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.05 }}
               >
-                {child.label}
-              </Link>
-            </motion.div>
-          ))}
+                <Link
+                  to={child.to}
+                  className="flex items-center gap-3 px-6 py-3 text-slate-700 hover:text-[#0145F2] hover:bg-[#0145F2]/5 hover:pl-8 transition-all duration-300 text-[14px] uppercase font-bold tracking-wider group/item"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#0145F2] opacity-0 group-hover/item:opacity-100 transition-opacity duration-300" />
+                  {child.label}
+                </Link>
+              </motion.div>
+            ))
+          )}
         </motion.div>
       </div>
     </div>
   )
 }
+
+const MobileNestedItem = ({ item }) => {
+  const hasLinks = item.links && item.links.length > 0;
+  return (
+    <div className="mb-1">
+      {hasLinks ? (
+        <>
+          <div className="px-4 py-2 text-[#334155] font-semibold text-[13px]">{item.label}</div>
+          <div className="pl-4 border-l border-[#0145F2]/20 ml-4 mb-2 space-y-1">
+            {item.links.map((link, i) => (
+              <MobileNestedItem key={link.to || i} item={link} />
+            ))}
+          </div>
+        </>
+      ) : (
+        <Link
+          to={item.to || '#'}
+          className="flex items-center gap-3 px-4 py-2 text-slate-600 hover:text-[#0145F2] hover:bg-[#0145F2]/5 hover:pl-6 transition-all duration-300 text-[13px] font-medium group/item rounded-lg"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-[#0145F2] opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 shrink-0" />
+          {item.label}
+        </Link>
+      )}
+    </div>
+  );
+};
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -110,7 +386,12 @@ export default function Navbar() {
     mouseY.set(0)
   }
 
-  const isDropdownActive = (item) => item.children.some(child => child.to === location.pathname)
+  const isDropdownActive = (item) => {
+    if (item.isMega) {
+      return item.columns.some(col => col.links.some(child => child.to === location.pathname))
+    }
+    return item.children?.some(child => child.to === location.pathname)
+  }
   const isLinkActive = (to) => location.pathname === to
 
   return (
@@ -119,33 +400,37 @@ export default function Navbar() {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ perspective: '1200px', rotateX, rotateY, transformStyle: 'preserve-3d' }}
-      className={`w-full fixed top-0 left-0 z-[100] transition-all duration-500 ${
-        scrolled
-          ? 'backdrop-blur-xl bg-[#222022]/80 border-b border-[#C3D809]/15 shadow-[0_4px_30px_rgba(195,216,9,0.1)] py-3'
-          : 'bg-transparent py-5'
-      }`}
+      className={`w-full fixed top-0 left-0 z-[100] transition-all duration-500 ${scrolled
+        ? 'backdrop-blur-xl bg-[#EDF1F5]/90 border-b border-[#0145F2]/15 shadow-[0_4px_30px_rgba(1,69,242,0.08)] py-1.5'
+        : 'bg-transparent py-2.5'
+        }`}
     >
-      <div className="flex justify-between items-center px-6 md:px-12 max-w-[1920px] mx-auto">
+      <div className="flex justify-between items-center px-2 md:px-12 max-w-[1920px] mx-auto">
         {/* Brand Logo */}
         <Link to="/" className="shrink-0 flex items-center gap-3 group">
           <motion.img
             src="/brand_logo.png"
             alt="Shyam Metalics"
             className="w-auto object-contain transition-all duration-300 group-hover:brightness-110"
-            style={{ height: 'clamp(46px, 5vw, 60px)' }}
+            style={{ height: '62px', width: 'auto', minWidth: 'auto' }}
             whileHover={{
               scale: 1.08,
               rotateY: 15,
-              filter: 'drop-shadow(0 0 16px rgba(195,216,9,0.4))',
+              filter: 'drop-shadow(0 0 16px rgba(1,69,242,0.4))',
             }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
           />
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-8 font-[Inter] tracking-tight uppercase font-bold text-[11px]">
+        <div className="hidden lg:flex items-center gap-8 font-[Inter] tracking-tight uppercase font-bold text-[14px]">
           <DropdownMenu item={navLinks.about} isActive={isDropdownActive(navLinks.about)} />
           <DropdownMenu item={navLinks.business} isActive={isDropdownActive(navLinks.business)} />
+          <DropdownMenu item={navLinks.investor} isActive={isDropdownActive(navLinks.investor)} />
+          <DropdownMenu item={navLinks.careers} isActive={isDropdownActive(navLinks.careers)} />
+          <DropdownMenu item={navLinks.sustainability} isActive={isDropdownActive(navLinks.sustainability)} />
+          <DropdownMenu item={navLinks.community} isActive={isDropdownActive(navLinks.community)} />
+          <DropdownMenu item={navLinks.contact} isActive={isDropdownActive(navLinks.contact)} />
           {directLinks.map((link, i) => (
             <motion.div
               key={link.to}
@@ -155,19 +440,20 @@ export default function Navbar() {
             >
               <Link
                 to={link.to}
-                className={`py-2 transition-colors duration-200 relative ${
-                  isLinkActive(link.to)
-                    ? 'text-[#C3D809]'
-                    : 'text-zinc-400 hover:text-[#C3D809]'
-                }`}
+                className={`py-2 transition-colors duration-200 relative group/link ${isLinkActive(link.to)
+                  ? 'text-[#0145F2]'
+                  : 'text-slate-600 hover:text-[#0145F2]'
+                  }`}
               >
                 {link.label}
-                {isLinkActive(link.to) && (
+                {isLinkActive(link.to) ? (
                   <motion.span
                     layoutId="nav-underline"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#C3D809] rounded-full"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#0145F2] rounded-full"
                     transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                   />
+                ) : (
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#0145F2] transition-all duration-300 group-hover/link:w-full" />
                 )}
               </Link>
             </motion.div>
@@ -182,9 +468,9 @@ export default function Navbar() {
           >
             <Link
               to="/seltiger"
-              className="hidden sm:block font-[Inter] tracking-tight uppercase font-bold text-[11px] text-[#C3D809] hover:text-[#222022] transition-all duration-300 px-4 py-2 border border-[#C3D809]/30 rounded-full hover:bg-[#C3D809] hover:border-[#C3D809] hover:shadow-[0_0_25px_rgba(195,216,9,0.3)]"
+              className="hidden sm:block transition-all duration-300 hover:drop-shadow-[0_0_15px_rgba(1,69,242,0.3)]"
             >
-              SEL TIGER
+              <img src="/sel_tiger.png" alt="SEL TIGER" className="h-12 w-auto object-contain" />
             </Link>
           </motion.div>
 
@@ -214,12 +500,12 @@ export default function Navbar() {
             transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="lg:hidden overflow-hidden"
           >
-            <div className="px-6 py-6 bg-[#1a181a]/95 backdrop-blur-xl border-t border-[#C3D809]/10 space-y-1 overflow-y-auto max-h-[70vh]">
+            <div className="px-6 py-6 bg-white/95 backdrop-blur-xl border-t border-[#0145F2]/10 space-y-1 overflow-y-auto max-h-[70vh]">
               {Object.entries(navLinks).map(([key, item]) => (
                 <div key={key}>
                   <button
                     onClick={() => setMobileDropdown(mobileDropdown === key ? null : key)}
-                    className="w-full flex items-center justify-between py-3 px-4 text-zinc-400 hover:text-white font-[Inter] uppercase font-bold text-xs tracking-wider rounded-lg hover:bg-zinc-800/30 transition-all"
+                    className="w-full flex items-center justify-between py-3 px-4 text-slate-600 hover:text-[#0145F2] font-[Inter] uppercase font-bold text-xs tracking-wider rounded-lg hover:bg-[#0145F2]/5 transition-all"
                   >
                     {item.label}
                     <motion.span
@@ -238,19 +524,24 @@ export default function Navbar() {
                         className="overflow-hidden"
                       >
                         <div className="pl-4 py-1 space-y-0.5">
-                          {item.children.map((child) => (
-                            <Link
-                              key={child.to}
-                              to={child.to}
-                              className={`block py-2.5 px-4 rounded-lg text-xs uppercase tracking-wider font-semibold transition-all ${
-                                isLinkActive(child.to)
-                                  ? 'text-[#C3D809] bg-[#C3D809]/5'
-                                  : 'text-zinc-500 hover:text-white hover:bg-zinc-800/30'
-                              }`}
-                            >
-                              {child.label}
-                            </Link>
-                          ))}
+                          {item.isMega ? (
+                            item.columns.map((col, idx) => (
+                              <MobileNestedItem key={col.label || idx} item={col} />
+                            ))
+                          ) : (
+                            item.children.map((child) => (
+                              <Link
+                                key={child.to}
+                                to={child.to}
+                                className={`block py-2 px-4 rounded-lg text-xs uppercase tracking-wider font-semibold transition-all ${isLinkActive(child.to)
+                                  ? 'text-[#0145F2] bg-[#0145F2]/5'
+                                  : 'text-slate-500 hover:text-[#0145F2] hover:bg-[#0145F2]/5'
+                                  }`}
+                              >
+                                {child.label}
+                              </Link>
+                            ))
+                          )}
                         </div>
                       </motion.div>
                     )}
@@ -262,11 +553,10 @@ export default function Navbar() {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`block py-3 px-4 font-[Inter] uppercase font-bold text-xs tracking-wider rounded-lg transition-all ${
-                    isLinkActive(link.to)
-                      ? 'text-[#C3D809] bg-[#C3D809]/5'
-                      : 'text-zinc-400 hover:text-white hover:bg-zinc-800/30'
-                  }`}
+                  className={`block py-3 px-4 font-[Inter] uppercase font-bold text-xs tracking-wider rounded-lg transition-all ${isLinkActive(link.to)
+                    ? 'text-[#0145F2] bg-[#0145F2]/5'
+                    : 'text-slate-600 hover:text-[#0145F2] hover:bg-[#0145F2]/5'
+                    }`}
                 >
                   {link.label}
                 </Link>
@@ -274,9 +564,9 @@ export default function Navbar() {
 
               <Link
                 to="/seltiger"
-                className="block py-3 px-4 text-center text-[#C3D809] font-bold text-xs uppercase tracking-wider border border-[#C3D809]/30 rounded-lg hover:bg-[#C3D809]/10 transition-all mt-4"
+                className="flex items-center justify-center transition-all mt-4 hover:opacity-80 pb-4"
               >
-                SEL TIGER
+                <img src="/sel_tiger.png" alt="SEL TIGER" className="h-12 w-auto object-contain" />
               </Link>
             </div>
           </motion.div>
